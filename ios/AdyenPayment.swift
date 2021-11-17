@@ -55,6 +55,7 @@ class AdyenPayment: RCTEventEmitter {
         PaymentsData.shopperEmail = paymentDetails["shopperEmail"] as! String
         PaymentsData.shopperLocale = paymentDetails["shopperLocale"] as! String
         PaymentsData.merchantAccount = paymentDetails["merchantAccount"] as! String
+        PaymentsData.additional_body_data = paymentDetails["additional_body_data"] as? [String: Any] ?? [:]
         if(additionalData != nil){
             let allow3DS2 : Bool = (additionalData?["allow3DS2"] != nil) ? additionalData?["allow3DS2"] as! Bool : false
             let executeThreeD : Bool = (additionalData?["executeThreeD"] != nil) ? additionalData?["executeThreeD"] as! Bool : false
@@ -263,7 +264,7 @@ class AdyenPayment: RCTEventEmitter {
     }
     
     func showDropInComponent(_ componentData : NSDictionary) throws{
-        let configuration = DropInComponent.PaymentMethodsConfiguration()
+4       let configuration = DropInComponent.PaymentMethodsConfiguration()
         let appleComponent : [String:Any] = componentData["applepay"] as? [String:Any] ?? [:]
         let cardComponent : [String:Any] = componentData["scheme"] as? [String:Any] ?? [:]
         if(!cardComponent.isEmpty){
@@ -345,7 +346,7 @@ class AdyenPayment: RCTEventEmitter {
     }
     
     func performPaymentDetails(with data: ActionComponentData) {
-        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData ?? "")
+        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData!)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
     
