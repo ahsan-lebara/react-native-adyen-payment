@@ -264,7 +264,7 @@ class AdyenPayment: RCTEventEmitter {
     }
     
     func showDropInComponent(_ componentData : NSDictionary) throws{
-4       let configuration = DropInComponent.PaymentMethodsConfiguration()
+       let configuration = DropInComponent.PaymentMethodsConfiguration()
         let appleComponent : [String:Any] = componentData["applepay"] as? [String:Any] ?? [:]
         let cardComponent : [String:Any] = componentData["scheme"] as? [String:Any] ?? [:]
         if(!cardComponent.isEmpty){
