@@ -3,6 +3,7 @@ package com.rnlib.adyen
 import android.app.Activity
 import android.content.Intent
 import android.content.Context
+import android.os.Debug
 
 import com.adyen.checkout.base.model.PaymentMethodsApiResponse
 import com.adyen.checkout.bcmc.BcmcConfiguration
@@ -176,10 +177,14 @@ class AdyenPaymentModule(private var reactContext : ReactApplicationContext) : R
     fun showPayment(component : String,componentData : ReadableMap,paymentDetails : ReadableMap) {
         paymentData = ReactNativeUtils.convertMapToJson(paymentDetails)
         val compData = ReactNativeUtils.convertMapToJson(componentData)
-        val additionalData: MutableMap<String, String> = linkedMapOf()
+        val additionalDataBody: MutableMap<String, String> = mutableMapOf()
+        for(key in paymentData.getJSONObject("additional_body_data").keys()){
+            additionalDataBody[key as String] = (paymentData.getJSONObject("additional_body_data") as JSONObject).getString(key)
+        }
+        val additionalData: Map<String, String> = linkedMapOf()
         val paymentMethodReq : PaymentMethodsRequest = PaymentMethodsRequest(paymentData.getString("merchantAccount"),
             paymentData.getString("shopperReference"),additionalData,ArrayList<String>(),getAmt(paymentData.getJSONObject("amount")),
-                 ArrayList<String>(),paymentData.getString("countryCode"),paymentData.getString("shopperLocale"),"Android")
+                 ArrayList<String>(),paymentData.getString("countryCode"),paymentData.getString("shopperLocale"),"Android",additionalDataBody)
 
         val paymentMethods : Call<ResponseBody> = ApiService.checkoutApi(configData.base_url).paymentMethods(configData.app_url_headers,paymentMethodReq)
         setLoading(true)
