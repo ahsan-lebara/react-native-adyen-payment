@@ -217,7 +217,7 @@ class AdyenPayment: RCTEventEmitter {
                 self.paymentMethods = response.paymentMethods
                 self.startPayment(self.component!,componentData: self.componentData!)
             case let .failure(error):
-                //self.sendFailure(code :"ERROR_GENERAL",message: error.localizedDescription)
+                self.sendFailure(code :"ERROR_GENERAL",message: error.localizedDescription)
                 self.presentAlert(withTitle:"Error",message: error.localizedDescription)
             }
     }
@@ -373,6 +373,7 @@ class AdyenPayment: RCTEventEmitter {
             }
         case let .failure(error):
             currentComponent?.stopLoading(withSuccess: false) { [weak self] in
+                self?.sendFailure(code : "ERROR_PAYMENT_DETAILS",message: error.localizedDescription)
                 self?.presentAlert(with: error)
             }
         }
