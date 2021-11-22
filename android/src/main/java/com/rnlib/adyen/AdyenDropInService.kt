@@ -104,13 +104,9 @@ class AdyenDropInService : DropInService() {
             val response = call.execute()
 
             val byteArray = response.errorBody()?.bytes()
-            if (byteArray != null) {
-                Logger.e(TAG, "errorBody - ${String(byteArray)}")
-            }
-
-            val detailsResponse = JSONObject(response.body()?.string())
 
             if (response.isSuccessful) {
+                val detailsResponse = JSONObject(response.body()?.string())
                 if (detailsResponse.has("action")) {
                     CallResult(CallResult.ResultType.ACTION, detailsResponse.get("action").toString())
                 } else {
@@ -135,13 +131,23 @@ class AdyenDropInService : DropInService() {
                     }*/
                 }
             } else {
-                Logger.e(TAG, "FAILED - ${response.message()}")
-                //CallResult(CallResult.ResultType.ERROR, response.message().toString())
-                val errObj : JSONObject = JSONObject()
-                errObj.put("resultType","ERROR")
-                errObj.put("code","ERROR_GENERAL")
-                errObj.put("message",response.message().toString())
-                CallResult(CallResult.ResultType.FINISHED, errObj.toString())
+                if (byteArray != null) {
+                    Logger.e(TAG, "errorBody - ${String(byteArray)}")
+                    val errorMsg = JSONObject(String(byteArray))["error"]
+                    val errObj : JSONObject = JSONObject()
+                    errObj.put("resultType","ERROR")
+                    errObj.put("code","ERROR_GENERAL")
+                    errObj.put("message",errorMsg)
+                    CallResult(CallResult.ResultType.FINISHED, errObj.toString())
+                }else{
+                    Logger.e(TAG, "FAILED - ${response.message()}")
+                    //CallResult(CallResult.ResultType.ERROR, response.message().toString())
+                    val errObj : JSONObject = JSONObject()
+                    errObj.put("resultType","ERROR")
+                    errObj.put("code","ERROR_GENERAL")
+                    errObj.put("message",response.message().toString())
+                    CallResult(CallResult.ResultType.FINISHED, errObj.toString())
+                }
             }
         } catch (e: IOException) {
             Logger.e(TAG, "IOException", e)

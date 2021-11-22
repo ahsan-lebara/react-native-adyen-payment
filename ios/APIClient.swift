@@ -46,11 +46,13 @@ internal final class APIClient {
             case let .success(data):
                 print(" ---- Response (/\(request.path)) ----")
                 printAsJSON(data)
-                if let error = (convertStringToDictionary(data: data)! as NSDictionary).value(forKey: "error") as? String{
-                    let error = NSError(domain: "payment_error", code: 0, userInfo: [NSLocalizedDescriptionKey: error])
-                    completionHandler(.failure(error))
-                    self.requestCounter -= 1
-                    return
+                if let dictionary = convertStringToDictionary(data: data) as NSDictionary?{
+                    if let error = (dictionary).value(forKey: "error") as? String{
+                        let error = NSError(domain: "payment_error", code: 0, userInfo: [NSLocalizedDescriptionKey: error])
+                        completionHandler(.failure(error))
+                        self.requestCounter -= 1
+                        return
+                    }
                 }
                 do {
                     let response = try Coder.decode(data) as R.ResponseType
