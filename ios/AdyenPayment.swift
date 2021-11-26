@@ -43,11 +43,10 @@ class AdyenPayment: RCTEventEmitter {
             self.vSpinner = nil
         }
     }
-    
     func setPaymentDetails(_ paymentDetails : NSDictionary){
         let amount = paymentDetails["amount"] as! [String : Any]
         let additionalData = paymentDetails["additionalData"] as? [String : Any]
-        PaymentsData.amount = Payment.Amount(value: amount["value"] as! Int, currencyCode: amount["currency"] as! String)
+        PaymentsData.amount = Payment.Amount(value: (amount["value"] as! NSNumber).intValue, currencyCode: amount["currency"] as! String)
         PaymentsData.reference = paymentDetails["reference"] as! String
         PaymentsData.countryCode = paymentDetails["countryCode"] as! String
         PaymentsData.returnUrl = paymentDetails["returnUrl"] as! String
@@ -346,7 +345,7 @@ class AdyenPayment: RCTEventEmitter {
     }
     
     func performPaymentDetails(with data: ActionComponentData) {
-        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData!)
+        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
     

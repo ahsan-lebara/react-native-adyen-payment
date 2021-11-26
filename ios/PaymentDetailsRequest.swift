@@ -16,7 +16,7 @@ internal struct PaymentDetailsRequest: Request {
     
     internal let details: AdditionalDetails
     
-    internal let paymentData: String
+    internal let paymentData: String?
     
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
