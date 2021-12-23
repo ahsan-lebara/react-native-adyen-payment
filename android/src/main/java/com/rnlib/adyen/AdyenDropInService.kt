@@ -133,12 +133,20 @@ class AdyenDropInService : DropInService() {
             } else {
                 if (byteArray != null) {
                     Logger.e(TAG, "errorBody - ${String(byteArray)}")
-                    val errorMsg = JSONObject(String(byteArray))["error"]
-                    val errObj : JSONObject = JSONObject()
-                    errObj.put("resultType","ERROR")
-                    errObj.put("code","ERROR_GENERAL")
-                    errObj.put("message",errorMsg)
-                    CallResult(CallResult.ResultType.FINISHED, errObj.toString())
+                    if(JSONObject(String(byteArray)).has("error")) {
+                        val errorMsg = JSONObject(String(byteArray))["error"]
+                        val errObj : JSONObject = JSONObject()
+                        errObj.put("resultType","ERROR")
+                        errObj.put("code","ERROR_GENERAL")
+                        errObj.put("message",errorMsg)
+                        CallResult(CallResult.ResultType.FINISHED, errObj.toString())
+                    } else{
+                        val errObj : JSONObject = JSONObject()
+                        errObj.put("resultType","ERROR")
+                        errObj.put("code","ERROR_GENERAL")
+                        errObj.put("message","")
+                        CallResult(CallResult.ResultType.FINISHED, errObj.toString())
+                    }
                 }else{
                     Logger.e(TAG, "FAILED - ${response.message()}")
                     //CallResult(CallResult.ResultType.ERROR, response.message().toString())
