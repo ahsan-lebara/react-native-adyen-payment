@@ -101,6 +101,8 @@ class AdyenPayment: RCTEventEmitter {
             if(self.storedPaymentMethod(ofType: StoredCardPaymentMethod.self) != nil){
                 let configuration = DropInComponent.PaymentMethodsConfiguration()
                 configuration.card.publicKey = cardComponent["card_public_key"] as? String
+                configuration.card.showsHolderNameField = cardComponent["showsHolderNameField"] as? Bool ?? true
+                configuration.card.showsStorePaymentMethodField = cardComponent["showsStorePaymentMethodField"] as? Bool ?? true
                 self.showDropInComponent(configuration: configuration)
             }else{
                 let component = CardComponent(paymentMethod: paymentMethod, publicKey:(cardComponent["card_public_key"] as! String))
