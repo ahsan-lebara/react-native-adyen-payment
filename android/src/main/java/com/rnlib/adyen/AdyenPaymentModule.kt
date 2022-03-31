@@ -371,6 +371,8 @@ class AdyenPaymentModule(private var reactContext : ReactApplicationContext) : R
         val cardComponent : JSONObject = componentData.getJSONObject(PaymentMethodTypes.SCHEME)
         val cardConfiguration = CardConfiguration.Builder(context, cardComponent.getString("card_public_key"))
                             .setShopperReference(paymentData.getString("shopperReference"))
+                            .setHolderNameRequire(true)
+                            .setShowStorePaymentField(cardComponent.optBoolean("showsStorePaymentMethodField"))
                             .build()
         val configBuilder : AdyenComponentConfiguration.Builder = createConfigurationBuilder(context)
         configBuilder.addCardConfiguration(cardConfiguration)
@@ -441,7 +443,7 @@ class AdyenPaymentModule(private var reactContext : ReactApplicationContext) : R
                             .setShopperReference(paymentData.getString("shopperReference"))
                             .setShopperLocale(shopperLocale)
                             .setHolderNameRequire(cardComponent.optBoolean("holderNameRequire"))
-                            .setShowStorePaymentField(cardComponent.optBoolean("showStorePaymentField"))
+                            .setShowStorePaymentField(cardComponent.optBoolean("showsStorePaymentMethodField"))
                             .build()
 
         val bcmcComponent : JSONObject = if(componentData.has(PaymentMethodTypes.BCMC))  componentData.getJSONObject(PaymentMethodTypes.BCMC) else JSONObject()
