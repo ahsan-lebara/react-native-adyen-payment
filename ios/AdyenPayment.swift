@@ -106,8 +106,8 @@ class AdyenPayment: RCTEventEmitter {
                 self.showDropInComponent(configuration: configuration)
             }else{
                 let component = CardComponent(paymentMethod: paymentMethod, publicKey:(cardComponent["card_public_key"] as! String))
-                component.showsHolderNameField = componentData.value(forKey: "showsHolderNameField") as? Bool ?? true
-                component.showsStorePaymentMethodField = componentData.value(forKey: "showsStorePaymentMethodField") as? Bool ?? true
+                component.showsHolderNameField = cardComponent["showsHolderNameField"] as? Bool ?? true
+                component.showsStorePaymentMethodField = cardComponent["showsStorePaymentMethodField"] as? Bool ?? true
                 self.present(component)
             }
         }
