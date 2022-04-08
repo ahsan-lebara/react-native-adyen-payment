@@ -378,6 +378,7 @@ class AdyenPayment: RCTEventEmitter {
             currentComponent?.stopLoading(withSuccess: false) { [weak self] in
                 self?.sendFailure(code : "ERROR_PAYMENT_DETAILS",message: error.localizedDescription)
                 self?.presentAlert(with: error)
+                (UIApplication.shared.delegate?.window??.rootViewController)!.dismiss(animated: true) {}
             }
         }
     }
