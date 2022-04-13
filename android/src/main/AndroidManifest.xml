@@ -14,7 +14,7 @@
 
 
                 <data
-                    android:host="${applicationId}"
+                    android:host="mylebara"
                     android:scheme="${checkoutRedirectScheme}" />
             </intent-filter>
         </activity>
