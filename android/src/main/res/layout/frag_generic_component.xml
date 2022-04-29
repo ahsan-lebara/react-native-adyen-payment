@@ -43,6 +43,7 @@
                 android:id="@+id/payButton"
                 style="@style/AdyenCheckout.Button.Colored"
                 android:enabled="false"
+                android:textColor="@color/primaryColor"
                 android:text="@string/pay_button"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
